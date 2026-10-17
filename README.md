@@ -1,10 +1,14 @@
 # Sign Lock
 
+![Sign Lock](docs/header.jpg)
+
 A small [SMAPI](https://smapi.io/) mod for Stardew Valley 1.6.
 
 Signs show whatever item you click them with, so it's easy to overwrite one by accident, for example when it sits right next to a chest. With this mod, a sign that already shows an item ignores clicks. Hold **Shift** while clicking to change it on purpose.
 
 Empty signs work like before, and picking a sign up with a tool still works too.
+
+![A blocked click with the hint above the toolbar](docs/in-game.jpg)
 
 ## Install
 
