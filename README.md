@@ -1,5 +1,7 @@
 # Sign Lock
 
+> **This repo has moved.** Sign Lock now lives in [Malenyaaa/stardew-mods](https://github.com/Malenyaaa/stardew-mods/tree/main/SignLock) together with my other mods. Get new versions from [Nexus Mods](https://www.nexusmods.com/stardewvalley/mods/54057).
+
 ![Sign Lock](docs/header.jpg)
 
 A small [SMAPI](https://smapi.io/) mod for Stardew Valley 1.6.
