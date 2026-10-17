@@ -1,8 +1,13 @@
 using System;
+using System.Linq;
+using System.Text.RegularExpressions;
 using HarmonyLib;
+using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.Menus;
 using StardewValley.Objects;
 
 namespace SignLock;
@@ -11,7 +16,10 @@ internal sealed class ModEntry : Mod
 {
     private static ModEntry Instance = null!;
     private ModConfig Config = null!;
-    private int LastHintTick = -1000;
+    private const int HintDuration = 120;
+    private const int HintFade = 30;
+    private string? HintText;
+    private int HintEndTick;
 
     public override void Entry(IModHelper helper)
     {
@@ -25,6 +33,37 @@ internal sealed class ModEntry : Mod
         );
 
         helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+        helper.Events.Display.RenderedHud += OnRenderedHud;
+    }
+
+    /// <summary>Draw the lock hint bottom-left, a bit above where vanilla HUD messages sit so it clears the toolbar.</summary>
+    private void OnRenderedHud(object? sender, RenderedHudEventArgs e)
+    {
+        int left = HintEndTick - Game1.ticks;
+        if (HintText is null || left <= 0)
+            return;
+
+        float alpha = Math.Min(1f, left / (float)HintFade);
+        const int pad = 20;
+        Vector2 size = Game1.smallFont.MeasureString(HintText);
+        int width = (int)size.X + pad * 2;
+        int height = (int)size.Y + pad * 2;
+        int x = 16;
+        int y = Game1.uiViewport.Height - 136 - height;
+
+        IClickableMenu.drawTextureBox(e.SpriteBatch, Game1.menuTexture, new Rectangle(0, 256, 60, 60), x, y, width, height, Color.White * alpha, drawShadow: false);
+        Utility.drawTextWithShadow(e.SpriteBatch, HintText, Game1.smallFont, new Vector2(x + pad, y + pad), Game1.textColor * alpha);
+    }
+
+    /// <summary>Turn e.g. "LeftShift, RightShift" into "Shift".</summary>
+    private static string DescribeKey(KeybindList keys)
+    {
+        var names = keys.Keybinds
+            .Where(k => k.IsBound)
+            .Select(k => string.Join(" + ", k.Buttons.Select(b => Regex.Replace(b.ToString(), "^(Left|Right)(?=[A-Z])", ""))))
+            .Distinct()
+            .ToArray();
+        return names.Length > 0 ? string.Join(" / ", names) : keys.ToString();
     }
 
     private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
@@ -55,14 +94,10 @@ internal sealed class ModEntry : Mod
             if (config.UnlockKey.IsDown())
                 return true;
 
-            if (config.ShowHint && Game1.ticks - Instance.LastHintTick > 180)
+            if (config.ShowHint)
             {
-                Instance.LastHintTick = Game1.ticks;
-                Game1.addHUDMessage(new HUDMessage(Instance.Helper.Translation.Get("hint.locked", new { key = config.UnlockKey.ToString() }))
-                {
-                    noIcon = true,
-                    timeLeft = 1500
-                });
+                Instance.HintText = Instance.Helper.Translation.Get("hint.locked", new { key = DescribeKey(config.UnlockKey) });
+                Instance.HintEndTick = Game1.ticks + HintDuration;
             }
 
             __result = true;
