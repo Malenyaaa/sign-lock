@@ -13,7 +13,7 @@ Empty signs work like before, and picking a sign up with a tool still works too.
 ## Install
 
 1. Install [SMAPI](https://smapi.io/).
-2. Download the latest release and unzip it into your `Mods` folder.
+2. Download the latest version from [Nexus Mods](https://www.nexusmods.com/stardewvalley/mods/54057) or [GitHub](https://github.com/Malenyaaa/sign-lock/releases) and unzip it into your `Mods` folder.
 3. Start the game through SMAPI.
 
 ## Config

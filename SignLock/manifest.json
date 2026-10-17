@@ -6,7 +6,7 @@
   "UniqueID": "Malenya.SignLock",
   "EntryDll": "SignLock.dll",
   "MinimumApiVersion": "4.0.0",
-  "UpdateKeys": [ "GitHub:Malenyaaa/sign-lock" ],
+  "UpdateKeys": [ "Nexus:54057", "GitHub:Malenyaaa/sign-lock" ],
   "Dependencies": [
     {
       "UniqueID": "spacechase0.GenericModConfigMenu",
