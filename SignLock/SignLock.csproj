@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>SignLock</AssemblyName>
+    <RootNamespace>SignLock</RootNamespace>
+    <Version>1.0.0</Version>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <EnableHarmony>true</EnableHarmony>
+    <CheckEolTargetFramework>false</CheckEolTargetFramework>
+
+    <!-- keep local folder paths out of the compiled DLL -->
+    <Deterministic>true</Deterministic>
+    <DebugType>embedded</DebugType>
+    <PathMap>$(MSBuildProjectDirectory)=SignLock</PathMap>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.3.2" />
+  </ItemGroup>
+
+</Project>
